@@ -34,16 +34,20 @@ func NewChecks(ctx context.Context, logger func(format string, msg ...interface{
 // with status 200 is written, and the text "OK" is written
 // to the response.
 func (c Checks) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var errFound bool
 	for _, check := range c.Checks {
 		err := check.Check(c.Context)
 		if err != nil {
 			if c.Logger != nil {
 				c.Logger("Error performing health check for %T (%s): %+v\n", check, check.LogInfo(c.Context), err)
 			}
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Everything is on fire and nothing is okay."))
-			return
+			errFound = true
 		}
+	}
+	if errFound {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Everything is on fire and nothing is okay."))
+		return
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK"))
