@@ -1,9 +1,8 @@
 package healthcheck
 
 import (
+	"context"
 	"net/http"
-
-	"golang.org/x/net/context"
 )
 
 // Checks defines a group of Checkers, a log function to

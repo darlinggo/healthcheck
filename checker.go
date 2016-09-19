@@ -1,6 +1,6 @@
 package healthcheck
 
-import "golang.org/x/net/context"
+import "context"
 
 // Checker defines the methods necessary to determine if a
 // certain aspect of a service should be considered healthy.

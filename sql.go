@@ -3,7 +3,7 @@ package healthcheck
 import (
 	"database/sql"
 
-	"golang.org/x/net/context"
+	"context"
 )
 
 // SQL is a type that fills the Checker interface
