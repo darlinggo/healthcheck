@@ -25,10 +25,18 @@ func NewSQL(db *sql.DB, id string) SQL {
 	}
 }
 
-// Check returns the output of the Ping method for
-// the *sql.DB.
+// Check verifies that a connection to the database
+// can be obtained, using the Ping method of the
+// underlying *sql.DB. It then makes sure the database
+// is still reachable, by sending a simple query.
 func (s SQL) Check(ctx context.Context) error {
-	return s.DB.Ping()
+	err := s.DB.Ping()
+	if err != nil {
+		return err
+	}
+	var one int
+	err = s.DB.QueryRow("SELECT 1;").Scan(&one)
+	return err
 }
 
 // LogInfo returns the ID string associated with the
